@@ -33,6 +33,7 @@ typedef struct s_table{
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	monitor;
 	pthread_mutex_t	end_sim;
+	pthread_mutex_t check;
 	bool			deads;
 	pthread_t		superv;
 }	t_table;
@@ -72,10 +73,10 @@ suseconds_t	get_dif_time(suseconds_t prev);
 bool		check_alive_philo(t_philo *philo);
 void		shut_down(t_table *table, t_philo *philo);
 void		print_state(suseconds_t time, t_philo *philo, char *str);
-void		check_death(t_table *table, t_philo *philos);
+bool		check_death(t_philo *philo);
 void		*routine(void	*temp);
 void		*rout_mon(void	*temp);
-bool	creat_monitor_guy(t_table *table, pthread_mutex_t *forks, t_philo *philos);
+bool		creat_monitor_guy(t_table *table, pthread_mutex_t *forks, t_philo *philos);
 void		pick_fork(t_philo *philo);
 void		drop_fork(t_philo *philo);
 #endif
