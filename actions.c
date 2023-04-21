@@ -14,11 +14,12 @@
 
 void	iseat(t_philo *philo)
 {
+
 	pick_fork(philo);
-	pthread_mutex_lock(&philo->may_die);
+	pthread_mutex_lock(&philo->table->end_sim);
 	print_state(get_dif_time(philo->table->time_start), philo, "is eating\n");
 	philo->time_after_ate = get_time();
-	pthread_mutex_unlock(&philo->may_die);
+	pthread_mutex_unlock(&philo->table->end_sim);
 	usleep(philo->table->time_to_eat * 1000);
 	drop_fork(philo);
 	//update number eats;
@@ -26,10 +27,10 @@ void	iseat(t_philo *philo)
 
 void	pick_fork(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
+	if (philo->id == philo->table->number_philos && philo->table->number_philos % 2 == 0)
 		{
-			pthread_mutex_lock(philo->left_fork);
 			pthread_mutex_lock(philo->right_fork);
+			pthread_mutex_lock(philo->left_fork);
 		}
 	else
 		{
@@ -43,10 +44,10 @@ void	pick_fork(t_philo *philo)
 
 void	drop_fork(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
+	if (philo->id == philo->table->number_philos && philo->table->number_philos % 2 == 0)
 	{
-		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
 	}
 	else
 	{
@@ -87,7 +88,6 @@ bool	check_alive_philo(t_philo *philo)
 
 void	print_state(suseconds_t time, t_philo *philo, char *str)
 {
-	printf("%d i tried wright: %s", philo->id, str);
 	if (philo->table->deads == true)
 		return ;
 	pthread_mutex_lock(&philo->table->monitor);

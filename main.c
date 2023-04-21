@@ -30,6 +30,9 @@ void	shut_down(t_table *table, t_philo *philo)
 			philo[i].left_fork = NULL;
 			philo[i].right_fork = NULL;
 		}
+/*		i = -1;
+ 		while (++i < table->number_philos)
+			free(&table->forks[i]); */
 		free(table->forks);
 		table->forks = NULL;
 	}
@@ -39,6 +42,7 @@ void	shut_down(t_table *table, t_philo *philo)
 		free(philo);
 		philo = NULL;
 	}
+	free(table);
 	exit(EXIT_SUCCESS);
 }
 
@@ -86,17 +90,13 @@ t_philo	*start_philos(t_table *table, char **argv)
 		philos[i].time_after_ate = table->time_start;
 		pthread_create(&philos[i].phi, NULL, routine, (void *)&philos[i]);
 	}
-	usleep(10000);
+//	usleep(10000);
 	return (philos);
 }
 
 bool	start_threads(t_table *table, t_philo *philo)
 {
 	int	i;
-
-	i = -1;
-	while (++i < table->number_philos)
-		pthread_create(&philo[i].phi, NULL, routine, (void *)&philo[i]);
 	if (!creat_monitor_guy(table , table->forks, philo))
 		error_msg("faleceu o moitoring\n");
 	i = -1;
@@ -124,7 +124,7 @@ int	main(int argc, char **argv)
 		error_msg("In put is incorrect, but be: number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_pholosopher_must_eat]\n");
 	if (checkdigit(argv) == false)
 		error_msg("must be a number\n");
-	table = (t_table *)malloc(sizeof(t_table));
+	table = malloc(sizeof(t_table));
 	if (start(table, argv, argc) != true)
 		printf("Error\n");
 	philo = start_philos(table, argv);

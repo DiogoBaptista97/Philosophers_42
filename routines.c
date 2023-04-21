@@ -19,7 +19,7 @@ void	*routine(void	*temp)
 	philo = (t_philo *)temp;
 	while (philo->table->deads == false)
 	{
-		printf("sleep %d\n", philo->id);
+//		printf("sleep %d\n", philo->id);
 		iseat(philo);	
 		issleep(philo);
 		isthink(philo);
@@ -43,6 +43,7 @@ void	*rout_mon(void	*temp)
 			{
 				print_state(get_dif_time(philo->table->time_start), &philo[i], "has died\n");
 				philo[i].table->deads = true;
+				philo->table->must_eat = 0;
 				pthread_mutex_unlock(&philo[i].table->end_sim);
 				return (NULL);
 			}
