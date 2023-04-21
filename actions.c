@@ -26,8 +26,16 @@ void	iseat(t_philo *philo)
 
 void	pick_fork(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left_fork);
-	pthread_mutex_lock(philo->right_fork);
+	if (philo->id % 2 == 0)
+		{
+			pthread_mutex_lock(philo->left_fork);
+			pthread_mutex_lock(philo->right_fork);
+		}
+	else
+		{
+			pthread_mutex_lock(philo->left_fork);
+			pthread_mutex_lock(philo->right_fork);
+		}
 	print_state(get_dif_time(philo->table->time_start), philo, "has taken a fork\n");
 	print_state(get_dif_time(philo->table->time_start), philo, "has taken a fork\n");
 
@@ -35,8 +43,16 @@ void	pick_fork(t_philo *philo)
 
 void	drop_fork(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+	}
 	print_state(get_dif_time(philo->table->time_start), philo, "has drop a fork\n");
 	print_state(get_dif_time(philo->table->time_start), philo, "has drop a fork\n");
 

@@ -60,6 +60,8 @@ bool	start(t_table *table, char **argv, int argc)
 	i = -1;
 	while (++i < table->number_philos)
 		pthread_mutex_init(&table->forks[i], NULL);
+	pthread_mutex_init(&table->monitor, NULL);
+	pthread_mutex_init(&table->end_sim, NULL);
 	return (true);
 }
 
@@ -71,12 +73,11 @@ t_philo	*start_philos(t_table *table, char **argv)
 	i = -1;
 	(void)argv;
 
-	pthread_mutex_init(&table->monitor, NULL);
-	pthread_mutex_init(&table->end_sim, NULL);
 	philos = malloc(sizeof(t_philo) * (table->number_philos));
 	i = -1;
 	while (++i < table->number_philos)
 	{
+		pthread_mutex_init(&philos[i].may_die, NULL);
 		philos[i].left_fork = &table->forks[i];
 		philos[i].right_fork = &table->forks[(i + 1) % table->number_philos];
 		philos[i].id = i + 1;
@@ -84,7 +85,6 @@ t_philo	*start_philos(t_table *table, char **argv)
 		philos[i].ate = table->must_eat;
 		philos[i].time_after_ate = table->time_start;
 		pthread_create(&philos[i].phi, NULL, routine, (void *)&philos[i]);
-		pthread_mutex_init(&philos[i].may_die, NULL);
 	}
 	usleep(10000);
 	return (philos);
@@ -112,7 +112,7 @@ bool	creat_monitor_guy(t_table *table, pthread_mutex_t *forks, t_philo *philos)
 	pthread_join(table->superv, NULL);
 	return(true);
 }
-//TODO creat monotoring guy
+
 int	main(int argc, char **argv)
 {
 	t_table	*table;

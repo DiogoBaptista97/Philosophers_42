@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 
 PUSH = philosiphers
 SRC_PUSH = main.c ft_atoi.c actions.c checks.c routines.c
