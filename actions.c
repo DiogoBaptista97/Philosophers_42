@@ -79,31 +79,3 @@ void	print_state(suseconds_t time, t_philo *philo, char *str)
 	pthread_mutex_unlock(&philo->table->monitor);
 
 }
-
-/* 
-void	check_death(t_table *table, t_philo *philos)
-{
-	int	i;
-	long int last;
-
- 	while (table->must_eat != 0)
-	{
-		i = 1;
-		while (++i < table->number_philos && table->deads == false)
-		{
-			pthread_mutex_lock(&table->end_sim);//ver se e o monnitor ou end sim
-			last = get_dif_time(philos[i].time_after_ate);
-//			printf("o %d, last: %ld o que tem para comer: %d\n", philos[i].id ,last, philos[i].table->time_to_die);
-			if (last > philos[i].table->time_to_die)
-			{
-				philos[i].table->deads = true;
-				philos[i].alive = false;
-			}
-			pthread_mutex_unlock(&table->end_sim);
-			if ( i == table->number_philos)
-				i = -1;
-			usleep(1);
-		}
-	}
-
-} */
