@@ -56,12 +56,10 @@ bool	start(t_table *table, char **argv, int argc)
 		table->must_eat = -1;
 	else
 		table->must_eat = ft_atoi(argv[5]);
-//	printf("numero do philo: %d\ntime to die:%d\ntime to eat:%d\ntime to sleep:%d\ntime fasting:%d\n", table->number_philos, table->time_to_die, table->time_to_eat, table->time_to_sleep, table->must_eat);
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->number_philos);
 	i = -1;
 	while (++i < table->number_philos)
 		pthread_mutex_init(&table->forks[i], NULL);
-//	printf("number of forks:%d, %d, %d, %d, %d\n", table->forks[0], table->forks[1], table->forks[2], table->forks[3], table->forks[4]);
 	return (true);
 }
 
@@ -135,6 +133,5 @@ int	main(int argc, char **argv)
 	if (!philo)
 		printf("error2\n");
 	shut_down(table, philo);
-//	pthread_mutex_destroy(&table->monitor);
 	return (0);
 }

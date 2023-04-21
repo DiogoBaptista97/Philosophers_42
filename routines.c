@@ -44,8 +44,6 @@ void	*rout_mon(void	*temp)
 				print_state(get_dif_time(philo->table->time_start), &philo[i], "has died\n");
 				philo[i].table->deads = true;
 				pthread_mutex_unlock(&philo[i].table->end_sim);
-//				pthread_mutex_unlock(&philo[i].table->monitor);
-//				shut_down(philo->table, philo);
 				return (NULL);
 			}
 			pthread_mutex_unlock(&philo[i].table->end_sim);
