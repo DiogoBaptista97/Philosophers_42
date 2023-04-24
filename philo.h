@@ -29,11 +29,12 @@ typedef struct s_table{
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				must_eat;
+	int				ate_all;
 	suseconds_t		time_start;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	monitor;
 	pthread_mutex_t	end_sim;
-	pthread_mutex_t check;
+	pthread_mutex_t check_dead;
 	bool			deads;
 	pthread_t		superv;
 }	t_table;

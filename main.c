@@ -56,6 +56,7 @@ bool	start(t_table *table, char **argv, int argc)
 	table->time_to_sleep = ft_atoi(argv[4]);
 	table->time_start = get_time();
 	table->deads = false;
+	table->ate_all = 0;
 	if (argc == 5)
 		table->must_eat = -1;
 	else
@@ -66,6 +67,7 @@ bool	start(t_table *table, char **argv, int argc)
 		pthread_mutex_init(&table->forks[i], NULL);
 	pthread_mutex_init(&table->monitor, NULL);
 	pthread_mutex_init(&table->end_sim, NULL);
+	pthread_mutex_init(&table->check_dead, NULL);
 	return (true);
 }
 
