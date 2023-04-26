@@ -15,7 +15,7 @@
 long	ft_long_atoi(char *str)
 {
 	int		j;
-	int  sinal;
+	int		sinal;
 	long	res;
 
 	sinal = 1;

@@ -11,10 +11,9 @@
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
-
+CFLAGS = -Wall -Wextra -Werror
 PUSH = philosiphers
-SRC_PUSH = main.c ft_atoi.c actions.c checks.c routines.c
+SRC_PUSH = main.c ft_atoi.c actions.c checks.c routines.c create.c print.c
 OBJ_PUSH = $(SRC_PUSH:.c=.o)
 
 

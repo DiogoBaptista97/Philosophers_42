@@ -32,23 +32,27 @@ typedef struct s_table{
 	int				ate_all;
 	suseconds_t		time_start;
 	pthread_mutex_t	*forks;
+	bool			*available;
 	pthread_mutex_t	monitor;
 	pthread_mutex_t	end_sim;
-	pthread_mutex_t check_dead;
+	pthread_mutex_t	check_dead;
+	pthread_mutex_t	lock_fork;
 	bool			deads;
 	pthread_t		superv;
 }	t_table;
 
 //info in a philo
 typedef struct s_philo{
-	pthread_t	phi;
-	int			id;
-	int			ate;
-	suseconds_t	time_after_ate;
-	t_table		*table;
-	pthread_mutex_t *right_fork;
-	pthread_mutex_t *left_fork;
-	pthread_mutex_t may_die;
+	pthread_t		phi;
+	int				id;
+	int				ate;
+	suseconds_t		time_after_ate;
+	t_table			*table;
+	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*left_fork;
+	int				r;
+	int				l;
+	pthread_mutex_t	may_die;
 }	t_philo;
 
 //define the forks and is states
@@ -63,6 +67,12 @@ suseconds_t	get_time(void);
 void		ft_putstr_fd(char *s, int fd);
 int			ft_atoi(char *str);
 void		ft_putnbr_fd(int n, int fd);
+bool		start(t_table *table, char **argv, int argc);
+t_philo		*start_philos(t_table *table, char **argv);
+bool		start_threads(t_table *table, t_philo *philo);
+bool		creat_monitor_guy(t_table *table,
+				pthread_mutex_t *forks, t_philo *philos);
+void		creat_forks(t_table *table);
 void		iseat(t_philo *philo);
 void		issleep(t_philo *philo);
 void		isthink(t_philo *philo);
@@ -77,7 +87,11 @@ void		print_state(suseconds_t time, t_philo *philo, char *str);
 bool		check_death(t_philo *philo);
 void		*routine(void	*temp);
 void		*rout_mon(void	*temp);
-bool		creat_monitor_guy(t_table *table, pthread_mutex_t *forks, t_philo *philos);
+void		rout_mon_aux(t_philo *philo);
+bool		creat_monitor_guy(t_table *table,
+				pthread_mutex_t *forks, t_philo *philos);
 void		pick_fork(t_philo *philo);
 void		drop_fork(t_philo *philo);
+bool		forks_available(t_philo *philo);
+
 #endif
