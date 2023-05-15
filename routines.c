@@ -19,9 +19,20 @@ void	*routine(void	*temp)
 	philo = (t_philo *)temp;
 	while (check_death(philo) == false && philo->ate != 0)
 	{
-		iseat(philo);
-		issleep(philo);
-		isthink(philo);
+		if (philo->table->number_philos == 1)
+		{
+			pthread_mutex_lock(philo->left_fork);
+			print_state(get_dif_time(philo->table->time_start),
+				philo, "has taken a fork\n");
+			pthread_mutex_unlock(philo->left_fork);
+			return (NULL);
+		}
+		if (philo->state == thinking)
+			iseat(philo);
+		if (philo->state == eating)
+			issleep(philo);
+		if (philo->state == sleeping)
+			isthink(philo);
 	}
 	return (NULL);
 }
@@ -77,7 +88,7 @@ void	rout_mon_aux(t_philo *philo)
 		philo, "has died\n");
 	pthread_mutex_lock(&philo->table->check_dead);
 	philo->table->deads = true;
-	pthread_mutex_unlock(&philo->table->check_dead);
 	philo->table->must_eat = 0;
+	pthread_mutex_unlock(&philo->table->check_dead);
 	pthread_mutex_unlock(&philo->table->end_sim);
 }

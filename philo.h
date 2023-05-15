@@ -21,7 +21,7 @@
 # include <stdio.h>
 # include <sys/time.h>
 # include <stdint.h>
-
+# include <string.h>
 //info for all philosophers
 typedef struct s_table{
 	int				number_philos;
@@ -41,6 +41,14 @@ typedef struct s_table{
 	pthread_t		superv;
 }	t_table;
 
+typedef enum s_philo_state{
+	fork_taken,
+	eating,
+	sleeping,
+	thinking,
+	dead
+}	t_philo_state;
+
 //info in a philo
 typedef struct s_philo{
 	pthread_t		phi;
@@ -50,11 +58,9 @@ typedef struct s_philo{
 	t_table			*table;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
-	int				r;
-	int				l;
+	t_philo_state	state;
 	pthread_mutex_t	may_die;
-}	t_philo;
-
+}	t_philo;	
 //define the forks and is states
 //time eating
 //time thinking
@@ -62,6 +68,8 @@ typedef struct s_philo{
 //keep tracks of forks in each side
 //time fasting
 //
+
+typedef struct timeval	t_timeval;
 
 suseconds_t	get_time(void);
 void		ft_putstr_fd(char *s, int fd);
@@ -93,5 +101,9 @@ bool		creat_monitor_guy(t_table *table,
 void		pick_fork(t_philo *philo);
 void		drop_fork(t_philo *philo);
 bool		forks_available(t_philo *philo);
+void		destroy_mut(t_table *table);
+bool		try_take_forks(t_philo *philo);
+void		release_fork_taken(pthread_mutex_t *fork,
+				bool *aval, t_philo *philo);
 
 #endif

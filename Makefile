@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 PUSH = philosiphers
 SRC_PUSH = main.c ft_atoi.c actions.c checks.c routines.c create.c print.c
 OBJ_PUSH = $(SRC_PUSH:.c=.o)
@@ -21,7 +21,7 @@ all: $(PUSH)
 
 
 $(PUSH): $(OBJ_PUSH)
-		$(CC) $(CFLAGS) -pthread $(OBJ_PUSH) -o philosiphers
+		$(CC) $(CFLAGS) -pthread $(OBJ_PUSH) -o philo
 
 clean:	clean
 		rm -rf $(OBJ_PUSH)

@@ -70,7 +70,7 @@ bool	checkdigit(char *argv[])
 		if (checkdigit_aux(argv[i]) == false)
 			return (false);
 		num = ft_long_atoi(argv[i]);
-		if (num > INT_MAX || num < INT_MIN)
+		if ((num > INT_MAX || num < 0))
 			return (false);
 		i++;
 	}

@@ -33,6 +33,18 @@ bool	start(t_table *table, char **argv, int argc)
 	return (true);
 }
 
+bool	start_threads(t_table *table, t_philo *philo)
+{
+	int	i;
+
+	if (!creat_monitor_guy(table, table->forks, philo))
+		error_msg("faleceu o moitoring\n");
+	i = -1;
+	while (++i < table->number_philos)
+		pthread_join(philo[i].phi, NULL);
+	return (true);
+}
+
 int	main(int argc, char **argv)
 {
 	t_table	*table;
@@ -43,7 +55,7 @@ int	main(int argc, char **argv)
 	if (argc != 5 && argc != 6)
 		error_msg("In put is incorrect\n");
 	if (checkdigit(argv) == false)
-		error_msg("must be a number\n");
+		error_msg("must be a number ou positive\n");
 	table = malloc(sizeof(t_table));
 	if (start(table, argv, argc) != true)
 		printf("Error\n");

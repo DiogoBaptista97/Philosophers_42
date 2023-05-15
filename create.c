@@ -17,7 +17,6 @@ void	shut_down(t_table *table, t_philo *philo)
 	int	i;
 
 	i = -1;
-	pthread_mutex_destroy(&table->monitor);
 	if (table->forks)
 	{
 		while (++i < table->number_philos)
@@ -27,17 +26,25 @@ void	shut_down(t_table *table, t_philo *philo)
 			philo[i].left_fork = NULL;
 			philo[i].right_fork = NULL;
 		}
+		free(table->available);
 		free(table->forks);
 		table->forks = NULL;
 	}
-	pthread_mutex_destroy(&table->end_sim);
-	pthread_mutex_destroy(&table->lock_fork);
+	destroy_mut(table);
 	if (philo)
 	{
 		free(philo);
 		philo = NULL;
 	}
 	free(table);
+}
+
+void	destroy_mut(t_table *table)
+{
+	pthread_mutex_destroy(&table->monitor);
+	pthread_mutex_destroy(&table->end_sim);
+	pthread_mutex_destroy(&table->lock_fork);
+	pthread_mutex_destroy(&table->check_dead);
 }
 
 void	creat_forks(t_table *table)
@@ -59,7 +66,6 @@ t_philo	*start_philos(t_table *table, char **argv)
 	int		i;
 	t_philo	*philos;
 
-	i = -1;
 	(void)argv;
 	philos = malloc(sizeof(t_philo) * (table->number_philos));
 	i = -1;
@@ -71,26 +77,16 @@ t_philo	*start_philos(t_table *table, char **argv)
 		philos[i].id = i + 1;
 		philos[i].table = table;
 		philos[i].ate = table->must_eat;
-		philos[i].time_after_ate = table->time_start;
-		philos[i].r = i;
-		philos[i].l = (i + 1) % table->number_philos;
-		pthread_create(&philos[i].phi, NULL, routine, (void *)&philos[i]);
-		usleep(1000);
+		philos[i].state = thinking;
+		philos[i].time_after_ate = get_time();
 	}
-	return (philos);
-}
-
-bool	start_threads(t_table *table, t_philo *philo)
-{
-	int	i;
-
-	if (!creat_monitor_guy(table, table->forks, philo))
-		error_msg("faleceu o moitoring\n");
-	usleep(1000);
 	i = -1;
 	while (++i < table->number_philos)
-		pthread_join(philo[i].phi, NULL);
-	return (true);
+	{
+		pthread_create(&philos[i].phi, NULL, routine, (void *)&philos[i]);
+		usleep(2000);
+	}
+	return (philos);
 }
 
 bool	creat_monitor_guy(t_table *table,
