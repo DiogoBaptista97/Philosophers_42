@@ -53,7 +53,7 @@ int	main(int argc, char **argv)
 
 	i = -1;
 	if (argc != 5 && argc != 6)
-		error_msg("In put is incorrect\n");
+		error_msg("Input is incorrect\n");
 	if (checkdigit(argv) == false)
 		error_msg("must be a number ou positive\n");
 	table = malloc(sizeof(t_table));
