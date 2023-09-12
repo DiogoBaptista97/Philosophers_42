@@ -48,10 +48,8 @@ bool	start_threads(t_table *table, t_philo *philo)
 int	main(int argc, char **argv)
 {
 	t_table	*table;
-	int		i;
 	t_philo	*philo;
 
-	i = -1;
 	if (argc != 5 && argc != 6)
 		error_msg("Input is incorrect\n");
 	if (checkdigit(argv) == false)
