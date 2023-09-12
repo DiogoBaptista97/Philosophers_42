@@ -60,13 +60,11 @@ bool	checkdigit_aux(char *str)
 bool	checkdigit(char *argv[])
 {
 	int		i;
-	int		j;
 	long	num;
 
 	i = 1;
 	while (argv[i])
 	{
-		j = 0;
 		if (checkdigit_aux(argv[i]) == false)
 			return (false);
 		num = ft_long_atoi(argv[i]);
